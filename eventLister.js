@@ -1,86 +1,86 @@
 function initEventListers() {
-    const inputs = [
+    // 1. Cafe & Name Input (기존 로직)
+    const textInputs = [
         { inputId: 'cafeInputText', countId: 'numCafe' },
-        { inputId: 'nameInputText', countId: 'numName' },
-        { inputId: 'peerInputText', countId: 'numPeer' }
+        { inputId: 'nameInputText', countId: 'numName' }
     ];
 
-    // 1. Input 이벤트 리스너 등록 (실시간 카운트)
-    inputs.forEach(item => {
+    textInputs.forEach(item => {
         const inputEl = document.getElementById(item.inputId);
         const countEl = document.getElementById(item.countId);
 
         if (inputEl && countEl) {
-            // 입력 시마다 카운트 업데이트
             inputEl.addEventListener('input', function() {
                 updateCount(inputEl, countEl);
             });
-            // 초기 로딩 시 카운트 업데이트
+            // 초기 로드 시 카운트 실행
             updateCount(inputEl, countEl);
         }
     });
 
-    // 2. 생성 버튼 클릭 이벤트 리스너
+    // 2. Peer List Input & Toggle
+    const peerInput = document.getElementById('peerInputText');
+    const peerCount = document.getElementById('numPeer');
+    const peerToggle = document.getElementById('peerToggle');
+
+    if (peerInput && peerToggle) {
+        // (A) 실시간 토글 상태 변경 감지
+        peerToggle.addEventListener('change', function(e) {
+            const isEnabled = e.target.checked; 
+            
+            setPeerInputState(isEnabled);
+            
+            if (isEnabled) {
+                updateCount(peerInput, peerCount);
+            } else {
+                if(peerCount) peerCount.innerText = "-"; 
+            }
+        });
+
+        // (B) Peer Input 내용 변경 감지
+        peerInput.addEventListener('input', function() {
+            if (peerToggle.checked) {
+                updateCount(peerInput, peerCount);
+            }
+        });
+
+        // (C) 초기 상태 설정
+        setPeerInputState(peerToggle.checked);
+        if (peerToggle.checked) updateCount(peerInput, peerCount);
+    }
+
+    // 3. ★ 핵심 수정: 버튼 클릭 시 utils.js의 onClickGeneration 실행 연결 ★
     const btnGenerate = document.getElementById('btnGenerate');
     if (btnGenerate) {
-        btnGenerate.addEventListener('click', handleGeneration);
+        // handleGeneration 삭제 -> onClickGeneration 연결
+        btnGenerate.addEventListener('click', onClickGeneration);
     }
 }
 
-// [헬퍼 함수] utils.js의 cleanInput 실행 후, 진짜 빈 값("")까지 필터링하여 반환
-function getRealList(inputValue) {
-    // utils.js의 cleanInput은 빈 문자열도 배열에 포함시킬 수 있으므로("") 필터링 추가
-    const rawList = cleanInput(inputValue); 
-    return rawList.filter(function(item) {
-        return item.length > 0;
-    });
+// [Helper] Textarea 활성화/비활성화 제어
+function setPeerInputState(isEnabled) {
+    const peerInput = document.getElementById('peerInputText');
+    if(!peerInput) return;
+
+    if (isEnabled) {
+        peerInput.disabled = false;
+        peerInput.classList.remove('bg-light'); 
+        peerInput.style.opacity = "1";
+    } else {
+        peerInput.disabled = true;
+        peerInput.classList.add('bg-light'); 
+        peerInput.style.opacity = "0.5";     
+    }
 }
 
-// 카운트 업데이트 함수
+// [Helper] 카운트 업데이트
 function updateCount(inputElement, displayElement) {
-    const realList = getRealList(inputElement.value);
-    displayElement.innerText = realList.length;
-}
+    // utils.js가 로드되어 있어야 cleanInput 사용 가능
+    if (typeof cleanInput !== 'function') return;
 
-// 생성 로직 및 유효성 검사 함수
-function handleGeneration() {
-    // 1. 각 영역 값 가져오기
-    const cafeVal = document.getElementById('cafeInputText').value;
-    const nameVal = document.getElementById('nameInputText').value;
-    const peerVal = document.getElementById('peerInputText').value;
-
-    // 2. 정제된 리스트 확보
-    const cafeList = getRealList(cafeVal);
-    const nameList = getRealList(nameVal);
-    const peerList = getRealList(peerVal);
-
-    // 3. 유효성 검사 (빈 리스트가 있는지 확인)
-    if (cafeList.length === 0) {
-        alert("⚠️ Cafe List가 비어있습니다.\n카페 이름을 입력해주세요.");
-        document.getElementById('cafeInputText').focus();
-        return;
-    }
-    if (nameList.length === 0) {
-        alert("⚠️ Name List가 비어있습니다.\n이름을 입력해주세요.");
-        document.getElementById('nameInputText').focus();
-        return;
-    }
-    if (peerList.length === 0) {
-        alert("⚠️ Peer List가 비어있습니다.\n이름을 입력해주세요.");
-        document.getElementById('peerInputText').focus();
-        return;
-    }
-
-    // 4. 모든 검사 통과 시 조합 생성 (utils.js 함수 사용)
-    const resultList = generateCombinationList(cafeList, nameList, peerList);
-
-    // 5. 결과 출력
-    const resultArea = document.getElementById('resultArea');
-    resultArea.value = resultList.join('\n');
+    const rawList = cleanInput(inputElement.value);
     
-    // 결과 개수 업데이트
-    const resultCountDiv = document.getElementById('resultCount');
-    if(resultCountDiv) {
-        resultCountDiv.innerText = `Total Combinations: ${resultList.length}`;
+    if (displayElement) {
+        displayElement.innerText = rawList.length;
     }
 }

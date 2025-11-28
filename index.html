@@ -25,28 +25,42 @@
 
         <div class="row g-4">
             <div class="col-md-4">
-                <label for="cafeInputText" class="form-label fw-bold">☕ Cafe List</label>
-                <textarea class="form-control shadow-sm" id="cafeInputText" rows="8" placeholder="쉼표(,)로 구분하여 입력해주세요.">스벅,투썸,공차,이디야,써니사이드,커피수공업,대나무다방,포트캔커피,하삼동,16oz,컴포즈,매머드,파운드,꾸띠에,메가,카페게이트,빽다방,더리터,더벤티,나카클,우지커피,백억커피</textarea>
-                <span class="count-badge">
-                    Count: <span id="numCafe" class="badge bg-primary rounded-pill">0</span>
-                </span>
-            </div>
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <label for="cafeInputText" class="form-label fw-bold m-0">☕ Cafe List</label>
+        </div>
+        
+        <textarea class="form-control shadow-sm" id="cafeInputText" rows="9" placeholder="쉼표(,)로 구분하여 입력해주세요.">스벅,투썸,공차,이디야,써니사이드,커피수공업,대나무다방,포트캔커피,하삼동,16oz,컴포즈,매머드,파운드,꾸띠에,메가,카페게이트,빽다방,더리터,더벤티,나카클,우지커피,백억커피</textarea>
+        <span class="count-badge">
+            Count: <span id="numCafe" class="badge bg-primary rounded-pill">0</span>
+        </span>
+    </div>
 
-            <div class="col-md-4">
-                <label for="nameInputText" class="form-label fw-bold">👤 Name List</label>
-                <textarea class="form-control shadow-sm" id="nameInputText" rows="8" placeholder="예: 이름1, 이름2, 이름3"></textarea>
-                <span class="count-badge">
-                    Count: <span id="numName" class="badge bg-success rounded-pill">0</span>
-                </span>
-            </div>
+    <div class="col-md-4">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <label for="nameInputText" class="form-label fw-bold m-0">👤 Name List</label>
+        </div>
 
-            <div class="col-md-4">
-                <label for="peerInputText" class="form-label fw-bold">🤝 Peer List</label>
-                <textarea class="form-control shadow-sm" id="peerInputText" rows="8" placeholder="예: 이름1, 이름2, 이름3"></textarea>
-                <span class="count-badge">
-                    Count: <span id="numPeer" class="badge bg-warning text-dark rounded-pill">0</span>
-                </span>
+        <textarea class="form-control shadow-sm" id="nameInputText" rows="9" placeholder="예: 이름1, 이름2, 이름3"></textarea>
+        <span class="count-badge">
+            Count: <span id="numName" class="badge bg-success rounded-pill">0</span>
+        </span>
+    </div>
+
+    <div class="col-md-4">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <label for="peerInputText" class="form-label fw-bold m-0">🤝 Peer List</label>
+            
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="peerToggle" checked>
+                <label class="form-check-label" for="peerToggle">사용</label>
             </div>
+        </div>
+
+        <textarea class="form-control shadow-sm" id="peerInputText" rows="9" placeholder="예: 이름1, 이름2, 이름3"></textarea>
+        <span class="count-badge">
+            Count: <span id="numPeer" class="badge bg-warning text-dark rounded-pill">0</span>
+        </span>
+    </div>
         </div>
 
         <div class="d-grid gap-2 col-6 mx-auto my-5">
